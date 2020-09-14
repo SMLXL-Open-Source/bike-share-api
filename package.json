@@ -1,0 +1,36 @@
+{
+    "name": "bike-share-api",
+    "version": "1.0.0",
+    "description": "Bike sharing api created using Node Express Mongodb",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SMLXL-Open-Source/bike-share-api.git"
+    },
+    "keywords": [],
+    "author": {
+        "name": "Khabubu Ndivhuwo",
+        "email": "hello@khabubundivhu.co.za",
+        "url": "http://khabubundivhu.co.za"
+    },
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/SMLXL-Open-Source/bike-share-api/issues"
+    },
+    "homepage": "https://github.com/SMLXL-Open-Source/bike-share-api#readme",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "mongoose": "^5.10.5",
+        "morgan": "^1.10.0"
+    },
+    "devDependencies": {
+        "dotenv": "^8.2.0",
+        "nodemon": "^2.0.4"
+    }
+}
