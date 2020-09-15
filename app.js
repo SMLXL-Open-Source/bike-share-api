@@ -33,6 +33,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 // Use passport middleware
 app.use(passport.initialize());
+app.use(passport.session());
 // Bring in passport strategy 
 require("./api/middleware/passport")(passport);
 
