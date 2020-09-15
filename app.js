@@ -9,12 +9,11 @@ const userSeeder = require('./api/seed/user-seed');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
-userSeeder
 
 // Bring in routes
 const userRoutes = require('./api/routes/users');
 
-if (process.env.ENVIRONMENT == 'production') {
+if (process.env.ENVIRONMENT == "production") {
     mongoose.connect(process.env.MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
         console.log(`${process.env.MONGO_PROD} was successfully connected`);
     }).catch(err => {
