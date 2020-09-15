@@ -7,7 +7,7 @@ const passport = require("passport");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../models/user");
-const { EMAIL_SMTP_HOST, EMAIL_SMTP_HOST, EMAIL_SMTP_USERNAME, EMAIL_SMTP_PASSWORD } = require('../config/keys');
+const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USERNAME, EMAIL_SMTP_PASSWORD } = require('../config/keys');
 
 // config nodemailer transport
 
