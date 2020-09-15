@@ -2,9 +2,23 @@ const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken');
-
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 const User = require("../models/user");
+
+// config nodemailer transport
+
+const transporter = nodemailer.createTransport({
+    host: process.env.EMAIL_SMTP_HOST,
+    port: process.env.EMAIL_SMTP_PORT,
+    // secure: process.env.EMAIL_SMTP_SECURE, // lack of ssl commented this. You can uncomment it.
+    auth: {
+        user: process.env.EMAIL_SMTP_USERNAME,
+        pass: process.env.EMAIL_SMTP_PASSWORD,
+    },
+});
 
 /**
  * @route POST v1/users/signup
@@ -34,10 +48,30 @@ router.post("/signup", (req, res, next) => {
                             last_name: req.body.last_name,
                             email: req.body.email,
                             password: hash,
+                            optPin: crypto.randomBytes(2).toString("hex"),
                         });
                         newUser
                             .save()
                             .then((user) => {
+                                const message = {
+                                    from: "hello@khabubundivhu.co.za",
+                                    to: user.email,
+                                    subject: "Bike Share - Verify Your Account",
+                                    html: `
+                                    <h3>Hi ${user.last_name} ${user.first_name}</h3>
+                                    <p>Thank you for creating an account on Bike Share</p>
+                                    <p>Please use the opt below to verify your account</p>
+                                    <h5>${user.optPin}</h5>
+                                    <a href="">Account verification link</a>
+                                `,
+                                };
+                                transporter.sendMail(message, function(error, info) {
+                                    if (error) {
+                                        console.log(error);
+                                    } else {
+                                        console.log("Email sent", info.response);
+                                    }
+                                });
                                 res.status(201).json({
                                     message: "User successfully created",
                                     user,
@@ -67,40 +101,58 @@ router.post("/login", (req, res, next) => {
         .then((user) => {
             if (!user) {
                 res.status(404).json({
-                    message: 'Authentication failed',
-                    success: false
+                    message: "Authentication failed",
+                    success: false,
                 });
             }
             bcrypt.compare(req.body.password, user.password).then((isMatch) => {
                 if (!isMatch) {
                     res.status(404).json({
-                        message: 'Authentication failed',
-                        success: false
+                        message: "Authentication failed",
+                        success: false,
                     });
                 } else {
                     const token = jwt.sign({
-                        userId: user._id,
-                        first_name: user.first_name,
-                        last_name: user.last_name,
-                        email: user.email
-                    }, process.env.JWT_KEY, {
-                        expiresIn: "72h"
-                    });
+                            userId: user._id,
+                            first_name: user.first_name,
+                            last_name: user.last_name,
+                            email: user.email,
+                        },
+                        process.env.JWT_KEY, {
+                            expiresIn: "72h",
+                        }
+                    );
                     res.status(200).json({
                         user,
                         token: token,
-                        message: 'User successfully authenticated',
-                        success: true
-                    })
+                        message: "User successfully authenticated",
+                        success: true,
+                    });
                 }
-            })
+            });
         })
         .catch((err) => {
             res.status(500).json({
                 error: err,
-                success: false
-            })
+                success: false,
+            });
         });
 });
+
+/**
+ * @route GET: v1/users/profile
+ * @description get users details
+ * @access Private
+ */
+
+router.get(
+    "/profile",
+    passport.authenticate("jwt", { session: false }),
+    (req, res, next) => {
+        return res.json({
+            user: req.user,
+        });
+    }
+);
 
 module.exports = router;

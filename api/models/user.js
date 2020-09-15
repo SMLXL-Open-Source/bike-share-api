@@ -27,9 +27,17 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
     isSuspended: {
         type: Boolean,
         default: false
+    },
+    optPin: {
+        type: String,
+        required: true
     }
 });
 

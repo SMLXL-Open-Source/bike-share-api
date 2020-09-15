@@ -4,24 +4,39 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
+const passport = require("passport");
+const userSeeder = require('./api/seed/user-seed');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
+userSeeder
 
 // Bring in routes
 const userRoutes = require('./api/routes/users');
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-    console.log(`${process.env.MONGO_URI} was successfully connected`);
-}).catch(err => {
-    console.log(err)
-})
+if (process.env.ENVIRONMENT == 'production') {
+    mongoose.connect(process.env.MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+        console.log(`${process.env.MONGO_PROD} was successfully connected`);
+    }).catch(err => {
+        console.log(err)
+    })
+} else {
+    mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+        console.log(`${process.env.MONGO_URI} was successfully connected`);
+    }).catch(err => {
+        console.log(err)
+    })
+}
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
+// Use passport middleware
+app.use(passport.initialize());
+// Bring in passport strategy 
+require("./api/middleware/passport")(passport);
 
 // Routes
 app.get('/', (req, res, next) => {
