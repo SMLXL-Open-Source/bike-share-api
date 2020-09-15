@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const passport = require("passport");
-const userSeeder = require('./api/seed/user-seed');
 require('dotenv').config();
 
 const port = process.env.PORT || 5000;
