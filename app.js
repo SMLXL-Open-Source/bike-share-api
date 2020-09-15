@@ -12,19 +12,11 @@ const port = PORT || 5000;
 // Bring in routes
 const userRoutes = require('./api/routes/users');
 
-if (ENVIRONMENT == "production") {
-    mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-        console.log(`${MONGO_PROD} was successfully connected`);
-    }).catch(err => {
-        console.log(err)
-    })
-} else {
-    mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
-        console.log(`${MONGO_URI} was successfully connected`);
-    }).catch(err => {
-        console.log(err)
-    })
-}
+mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+    console.log(`${MONGO_PROD} was successfully connected`);
+}).catch(err => {
+    console.log(err)
+})
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
