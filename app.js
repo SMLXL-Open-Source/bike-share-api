@@ -7,13 +7,14 @@ const path = require('path');
 const passport = require("passport");
 const { PORT, MONGO_URI, MONGO_PROD, ENVIRONMENT } = require('./api/config/keys')
 
-const port = PORT || 5000;
+const port = process.env.PORT || 5000;
 
 // Bring in routes
 const userRoutes = require('./api/routes/users');
 mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     console.log(`${MONGO_PROD} was successfully connected`);
 }).catch(err => {
+    console.log(MONGO_PROD)
     console.log(err)
 })
 
