@@ -11,7 +11,6 @@ const port = PORT || 5000;
 
 // Bring in routes
 const userRoutes = require('./api/routes/users');
-
 mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
     console.log(`${MONGO_PROD} was successfully connected`);
 }).catch(err => {
