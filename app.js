@@ -13,6 +13,7 @@ const port = process.env.PORT || 5000;
 const userRoutes = require('./api/routes/users');
 const manageRouter = require('./api/routes/manage');
 const bikeRouter = require('./api/routes/bikes');
+const stationRouter = require('./api/routes/stations');
 
 // Connect Db
 mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }).then(() => {
@@ -39,6 +40,7 @@ app.get('/', (req, res, next) => {
 app.use('/v1/users', userRoutes);
 app.use('/v1/manage', manageRouter);
 app.use('/v1/bikes', bikeRouter);
+app.use('/v1/stations', stationRouter);
 
 app.listen(port, (req, res) => {
     console.log(`Server is listening to port ${port}`)

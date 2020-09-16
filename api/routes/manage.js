@@ -4,7 +4,9 @@ const passport = require('passport');
 const Bike = require('../models/bike');
 const mongoose = require('mongoose');
 const user = require('../models/user');
+const Station = require('../models/station');
 
+// Manage Bikes
 /**
  * @route POST v1/manage/bike
  * @description Add a bike
@@ -76,6 +78,48 @@ router.patch('/bike/update/:id', passport.authenticate('jwt', { session: false }
     } catch (error) {
         res.status(500).json({
             message: 'Something went wrong',
+            success: false
+        })
+    }
+})
+
+// Manage Stations
+/**
+ * @route POST v1/manage/stations/create
+ * @description Add a station
+ * @access Private
+ */
+router.post('/stations/create', passport.authenticate('jwt', { session: false }), (req, res, next) => {
+    const isAdmin = req.user.isAdmin;
+    if (isAdmin) {
+        let {
+            name,
+            longitude,
+            latitude,
+            available_bikes
+        } = req.body
+        let newStation = new Station({
+            _id: mongoose.Types.ObjectId(),
+            name,
+            longitude,
+            latitude,
+            available_bikes
+        });
+        newStation.save().then((station) => {
+            res.status(201).json({
+                station,
+                message: 'Station successfully created',
+                success: true
+            })
+        }).catch(error => {
+            res.status(500).json({
+                message: 'Something went wrong',
+                success: false
+            })
+        })
+    } else {
+        return res.status(401).json({
+            message: 'Not Authorized',
             success: false
         })
     }
