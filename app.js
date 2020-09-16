@@ -15,6 +15,12 @@ const manageRouter = require('./api/routes/manage');
 const bikeRouter = require('./api/routes/bikes');
 const stationRouter = require('./api/routes/stations');
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 // Connect Db
 mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }).then(() => {
     console.log(`${MONGO_PROD} was successfully connected`);
@@ -37,6 +43,7 @@ require("./api/middleware/passport")(passport);
 app.get('/', (req, res, next) => {
     res.send(`Server is running on port ${port}`);
 });
+
 app.use('/v1/users', userRoutes);
 app.use('/v1/manage', manageRouter);
 app.use('/v1/bikes', bikeRouter);
