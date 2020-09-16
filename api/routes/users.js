@@ -7,7 +7,7 @@ const passport = require("passport");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const User = require("../models/user");
-const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USERNAME, EMAIL_SMTP_PASSWORD } = require('../config/keys');
+const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USERNAME, EMAIL_SMTP_PASSWORD, JWT_KEY } = require('../config/keys');
 
 // config nodemailer transport
 
@@ -119,7 +119,7 @@ router.post("/login", (req, res, next) => {
                             last_name: user.last_name,
                             email: user.email,
                         },
-                        process.env.JWT_KEY, {
+                        JWT_KEY, {
                             expiresIn: "72h",
                         }
                     );

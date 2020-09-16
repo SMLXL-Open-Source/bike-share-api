@@ -11,7 +11,11 @@ const port = process.env.PORT || 5000;
 
 // Bring in routes
 const userRoutes = require('./api/routes/users');
-mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true }).then(() => {
+const manageRouter = require('./api/routes/manage');
+const bikeRouter = require('./api/routes/bikes');
+
+// Connect Db
+mongoose.connect(MONGO_PROD, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }).then(() => {
     console.log(`${MONGO_PROD} was successfully connected`);
 }).catch(err => {
     console.log(MONGO_PROD)
@@ -33,6 +37,8 @@ app.get('/', (req, res, next) => {
     res.send(`Server is running on port ${port}`);
 });
 app.use('/v1/users', userRoutes);
+app.use('/v1/manage', manageRouter);
+app.use('/v1/bikes', bikeRouter);
 
 app.listen(port, (req, res) => {
     console.log(`Server is listening to port ${port}`)
