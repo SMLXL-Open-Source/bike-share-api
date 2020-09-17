@@ -8,4 +8,6 @@ module.exports = {
     EMAIL_SMTP_PORT: 8889,
     EMAIL_SMTP_USERNAME: "hello@khabubundivhu.co.za",
     EMAIL_SMTP_PASSWORD: "Khabuza@1",
+    GEOCODER_API_KEY: "UCmofA7DCSNAF4gGxaL75xoC8V7WXKBz",
+    GEOCODER_PROVIDER: "mapquest"
 };

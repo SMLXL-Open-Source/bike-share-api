@@ -44,10 +44,10 @@ app.get('/', (req, res, next) => {
     res.send(`Server is running on port ${port}`);
 });
 
-app.use('/v1/users', userRoutes);
-app.use('/v1/manage', manageRouter);
-app.use('/v1/bikes', bikeRouter);
-app.use('/v1/stations', stationRouter);
+app.use('/api/v1/users', userRoutes);
+app.use('/api/v1/manage', manageRouter);
+app.use('/api/v1/bikes', bikeRouter);
+app.use('/api/v1/stations', stationRouter);
 
 app.listen(port, (req, res) => {
     console.log(`Server is listening to port ${port}`)

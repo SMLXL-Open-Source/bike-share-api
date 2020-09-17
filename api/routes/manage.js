@@ -94,15 +94,13 @@ router.post('/stations/create', passport.authenticate('jwt', { session: false })
     if (isAdmin) {
         let {
             name,
-            longitude,
-            latitude,
+            address,
             available_bikes
         } = req.body
         let newStation = new Station({
             _id: mongoose.Types.ObjectId(),
             name,
-            longitude,
-            latitude,
+            address,
             available_bikes
         });
         newStation.save().then((station) => {
